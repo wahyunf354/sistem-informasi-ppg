@@ -1,0 +1,481 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Rest API to management Persons LDII",
+    "description": "Rest API to management Jamaah LDII",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api"
+    }
+  ],
+  "paths": {
+    "/persons" : {
+      "get" : {
+        "security": [{
+          "PersonAuth": []
+        }],
+        "tags": ["Persons API"],
+        "description": "Get all persons",
+        "summary": "Get all persons",
+        "responses": {
+          "200": {
+            "description": "Success get all persons",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Person"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500":{
+            "description": "Internal Server Error"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "security": [{
+          "PersonAuth": []
+        }],
+        "tags": ["Persons API"],
+        "description": "Create New Person",
+        "summary": "Create New Person",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdatePerson"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Create Person",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Person"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/persons/{personid}": {
+      "get": {
+        "security": [{
+          "PersonAuth": []
+        }],
+        "tags": ["Persons API"],
+        "summary": "Get One Person",
+        "description": "Get One Person",
+        "parameters": [
+          {
+            "name": "personid",
+            "in": "path",
+            "description": "Person Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get one person",
+            "content": {
+              "application/json":{
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Person"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [{
+          "PersonAuth": []
+        }],
+        "tags": ["Persons API"],
+        "description": "Update Person",
+        "summary": "Update Person",
+        "parameters": [{
+          "name": "personid",
+          "in": "path",
+          "description": "Person Id"
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdatePerson"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success update person",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Person"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "security": [{
+          "PersonAuth": []
+        }],
+        "tags": ["Persons API"],
+        "summary": "Delete Person",
+        "description": "Delete Person",
+        "parameters": [{
+          "name": "personid",
+          "in": "path",
+          "description": "Person Id"
+        }],
+        "responses": {
+          "200": {
+            "description": "Success Delete Person",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user and admin",
+        "description": "Login user and admin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string"
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "role_id": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        },
+                        "person_id": {
+                          "type": "string",
+                          "default": null
+                        },
+                        "created_at": {
+                          "type": "string"
+                        },
+                        "updated_at": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "PersonAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "CreateOrUpdatePerson": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "gander": {
+            "type": "string"
+          },
+          "desa": {
+            "type": "string"
+          },
+          "kelompok": {
+            "type": "string"
+          },
+          "birth": {
+            "type": "string"
+          },
+          "last_education": {
+            "type": "string",
+            "default": null
+          },
+          "current_education": {
+            "type": "string",
+            "default": null
+          },
+          "parent_name": {
+            "type": "string"
+          },
+          "no_hp": {
+            "type": "string"
+          },
+          "is_ppg": {
+            "type": "boolean",
+            "default": false
+          },
+          "is_mubaleg_setempat": {
+            "type": "boolean",
+            "default": false
+          },
+          "is_mubaleg_tugasan": {
+            "type": "boolean",
+            "default": false
+          },
+          "dapukan": {
+            "type": "string"
+          },
+          "status_pernikahan": {
+            "type": "string",
+            "enum": ["Belum Menikah", "Sudah Menikah", "Janda", "Duda"]
+          },
+          "keterampilan_kemandirian": {
+            "type": "string"
+          },
+          "hobby":{
+            "type": "string"
+          },
+          "pekerjaan": {
+            "type": "string"
+          },
+          "count_hadist_himpunan_khtam": {
+            "type": "number"
+          },
+          "kutubusitah_khatam": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Shohih Bukhori", "Shohih Muslim", "Sunan An-Nassai", "Sunan At-Tirmidzi", "Sunan Abi Daud", "Sunan Ibnu Majah", "?"]
+            }
+          },
+          "blood_group": {
+            "type": "string",
+            "enum": ["A", "A-", "B", "B-", "AB", "AB-", "O", "O-"]
+          },
+          "url_profil": {
+            "type": "string"
+          }
+        }
+      },
+      "Person": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "gander": {
+            "type": "string"
+          },
+          "desa": {
+            "type": "string"
+          },
+          "kelompok": {
+            "type": "string"
+          },
+          "birth": {
+            "type": "string"
+          },
+          "last_education": {
+            "type": "string",
+            "default": null
+          },
+          "current_education": {
+            "type": "string",
+            "default": null
+          },
+          "parent_name": {
+            "type": "string"
+          },
+          "no_hp": {
+            "type": "string"
+          },
+          "is_ppg": {
+            "type": "boolean",
+            "default": false
+          },
+          "is_mubaleg_setempat": {
+            "type": "boolean",
+            "default": false
+          },
+          "is_mubaleg_tugasan": {
+            "type": "boolean",
+            "default": false
+          },
+          "dapukan": {
+            "type": "string"
+          },
+          "status_pernikahan": {
+            "type": "string",
+            "enum": ["Belum Menikah", "Sudah Menikah", "Janda", "Duda"]
+          },
+          "keterampilan_kemandirian": {
+            "type": "string"
+          },
+          "hobby":{
+            "type": "string"
+          },
+          "pekerjaan": {
+            "type": "string"
+          },
+          "count_hadist_himpunan_khtam": {
+            "type": "number"
+          },
+          "kutubusitah_khatam": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Shohih Bukhori", "Shohih Muslim", "Sunan An-Nassai", "Sunan At-Tirmidzi", "Sunan Abi Daud", "Sunan Ibnu Majah", "?"]
+            }
+          },
+          "blood_group": {
+            "type": "string",
+            "enum": ["A", "A-", "B", "B-", "AB", "AB-", "O", "O-"]
+          },
+          "url_profil": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string",
+            "default": null
+          }
+        }
+      }
+    }
+  }
+}
+

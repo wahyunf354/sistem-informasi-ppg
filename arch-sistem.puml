@@ -1,0 +1,10 @@
+@startuml
+start
+:Menentukan Variabel Penelitian;
+:Menentukan Populasi dan Sampel;
+:Menentukan Jenis dan Sumber Data;
+:Menentukan Teknik Pengumpulan Data;
+:Menentukan Teknik Analisis Data;
+:Menentukan Hasil Penelitian;
+stop
+@enduml
