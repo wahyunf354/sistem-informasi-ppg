@@ -7,7 +7,15 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api"
+      "description": "Server for Rest API",
+      "url": "http://{IP}:3000/api",
+      "variables": {
+        "IP": {
+          "default": "localhost",
+          "description": "IP for server",
+          "enum": ["localhost"]
+        }
+      }
     }
   ],
   "paths": {
@@ -256,49 +264,69 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "code": {
-                      "type": "integer"
-                    },
-                    "status": {
-                      "type": "string"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "token": {
-                          "type": "string"
-                        },
-                        "id": {
-                          "type": "string"
-                        },
-                        "role_id": {
-                          "type": "string"
-                        },
-                        "role": {
-                          "type": "string"
-                        },
-                        "person_id": {
-                          "type": "string",
-                          "default": null
-                        },
-                        "created_at": {
-                          "type": "string"
-                        },
-                        "updated_at": {
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
           }
         }
       }
-    
+    },
+    "/current_user": {
+      "get": {
+        "security": [{"PersonAuth": []}],
+        "tags" : ["Auth"],
+        "summary": "Get current user login",
+        "description": "Get current user login",
+        "responses": {
+          "200": {
+            "description": "Success get current user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "security": [{
+          "PersonAuth": []
+        }],
+        "summary": "Log out user and admin",
+        "description": "Log out user and admin",
+        "responses": {
+          "200": {
+            "description": "Success log out user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "number"
+                    },
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -449,8 +477,9 @@
           "pekerjaan": {
             "type": "string"
           },
-          "count_hadist_himpunan_khtam": {
-            "type": "number"
+          "count_hadist_himpunan_khatam": {
+            "type": "integer",
+            "format": "int8"
           },
           "kutubusitah_khatam": {
             "type": "array",
@@ -472,6 +501,44 @@
           "updated_at": {
             "type": "string",
             "default": null
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "role_id": {
+                "type": "string"
+              },
+              "role": {
+                "type": "string"
+              },
+              "person_id": {
+                "type": "string",
+                "default": null
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              }
+            }
           }
         }
       }
