@@ -6,10 +6,11 @@ import (
 )
 
 type Domain struct {
+	ID                        string
 	Name                      string
 	Gender                    string
-	Desa                      string
-	Kelompok                  string
+	DesaId                    string
+	KelompokId                string
 	Birth                     time.Time
 	LastEduction              string
 	CurrentEducation          string
@@ -28,6 +29,17 @@ type Domain struct {
 	UrlProfile                string
 	CreatedAt                 time.Time
 	UpdateAt                  time.Time
+
+	Desa     Desa
+	Kelompok Kelompok
+}
+
+type Desa struct {
+	Name string
+}
+
+type Kelompok struct {
+	Name string
 }
 
 type Usecase interface {

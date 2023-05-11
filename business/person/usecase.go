@@ -16,6 +16,10 @@ func (p PersonUsecase) CreatePerson(ctx context.Context, domain *Domain) (Domain
 	if domain.Name == "" {
 		return Domain{}, controllers.EMPTY_NAME
 	}
+	
+	if domain.Gender == "" {
+		return Domain{}, controllers.EMPTY_GENDER
+	}
 
 	result, err := p.PersonRepository.CreatePerson(ctx, domain)
 
@@ -25,6 +29,3 @@ func (p PersonUsecase) CreatePerson(ctx context.Context, domain *Domain) (Domain
 
 	return result, nil
 }
-
-
-
